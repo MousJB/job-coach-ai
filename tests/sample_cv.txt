@@ -1,0 +1,147 @@
+Jean Dupont
+
+Développeur Full Stack Python / JavaScript
+
+Email : jean.dupont@email.com
+Téléphone : +33 6 12 34 56 78
+
+Ville : Lyon, France
+
+LinkedIn :
+https://linkedin.com/in/jeandupont
+
+GitHub :
+https://github.com/jeandupont
+
+Portfolio :
+https://jeandupont.dev
+
+--------------------------------------------------
+
+PROFIL
+
+Développeur Full Stack avec 5 ans d'expérience dans le développement d'applications web.
+Passionné par les architectures modernes, les API REST et les outils d'automatisation.
+Habitué au travail en équipe Agile.
+
+--------------------------------------------------
+
+COMPÉTENCES
+
+Python
+FastAPI
+Django
+Flask
+JavaScript
+TypeScript
+React
+Next.js
+Node.js
+SQL
+PostgreSQL
+Docker
+Git
+GitHub
+Linux
+CI/CD
+REST API
+OpenAI API
+
+--------------------------------------------------
+
+EXPÉRIENCE
+
+Senior Full Stack Developer
+TechNova
+Janvier 2023 - Aujourd'hui
+
+- Développement d'une plateforme SaaS.
+- Création d'API REST avec FastAPI.
+- Déploiement Docker.
+- Optimisation des performances backend.
+- Intégration OpenAI.
+
+Technologies :
+Python
+FastAPI
+Docker
+PostgreSQL
+Redis
+GitHub Actions
+
+--------------------------------------------------
+
+Full Stack Developer
+Digital Solutions
+Mars 2021 - Décembre 2022
+
+- Développement d'interfaces React.
+- Création de microservices.
+- Maintenance d'applications clients.
+
+Technologies :
+React
+TypeScript
+Node.js
+Express
+MongoDB
+
+--------------------------------------------------
+
+Développeur Web
+WebFactory
+Septembre 2019 - Février 2021
+
+- Développement de sites web.
+- Création de backends Django.
+- Maintenance serveur Linux.
+
+Technologies :
+Python
+Django
+JavaScript
+MySQL
+
+--------------------------------------------------
+
+FORMATION
+
+Master Informatique
+Université Claude Bernard Lyon 1
+
+2019
+
+Licence Informatique
+Université Claude Bernard Lyon 1
+
+2017
+
+--------------------------------------------------
+
+CERTIFICATIONS
+
+AWS Certified Cloud Practitioner
+
+Scrum Fundamentals Certified
+
+--------------------------------------------------
+
+LANGUES
+
+Français : Natif
+
+Anglais : C1
+
+Espagnol : B1
+
+--------------------------------------------------
+
+CENTRES D'INTÉRÊT
+
+Open Source
+
+Intelligence Artificielle
+
+Running
+
+Photographie

@@ -1,0 +1,5 @@
+TEMPERATURE = 0.2
+
+MAX_TOKENS = 4000
+
+DEBUG = True
