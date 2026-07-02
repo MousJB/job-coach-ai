@@ -51,7 +51,7 @@ class LLMClient:
             user_prompt=user_prompt,
         )
 
-        print("RAW RESPONSE:", repr(response))  # debug temporaire — à retirer après
+    
 
         data = json.loads(response)
 

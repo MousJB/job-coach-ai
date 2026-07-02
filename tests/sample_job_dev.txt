@@ -1,0 +1,37 @@
+Développeur Full Stack Senior — Paris (Hybrid)
+
+Entreprise : DataFlow SaaS
+Contrat : CDI
+Localisation : Paris 9ème / Remote 3j/semaine
+Salaire : 55-70k€
+
+À propos de nous :
+DataFlow SaaS est une startup en forte croissance qui développe des outils d'automatisation et d'analyse de données pour les équipes marketing B2B. Nous construisons des produits modernes, scalables, et on adore les gens qui savent à la fois coder et penser produit.
+
+Le poste :
+On cherche un développeur Full Stack Senior pour rejoindre notre équipe tech de 8 personnes. Tu travailleras directement avec le CTO sur l'architecture de notre plateforme principale et le développement de nouvelles fonctionnalités.
+
+Ce que tu feras :
+- Développer et maintenir notre plateforme SaaS en Python/FastAPI (backend) et React/TypeScript (frontend)
+- Concevoir et implémenter des API REST robustes et performantes
+- Mettre en place et maintenir notre infrastructure Docker et CI/CD (GitHub Actions)
+- Intégrer des services tiers et des API IA (OpenAI, etc.)
+- Optimiser les performances de notre base de données PostgreSQL
+- Participer aux code reviews et contribuer à l'amélioration continue de nos pratiques
+
+Ce qu'on cherche :
+- 4+ ans d'expérience en développement Full Stack
+- Maîtrise de Python (FastAPI ou Django) et React/TypeScript
+- Bonne connaissance de Docker et des pratiques CI/CD
+- Expérience avec PostgreSQL ou autre base de données relationnelle
+- Expérience en développement de plateformes SaaS
+- Anglais professionnel (échanges réguliers avec des partenaires internationaux)
+
+Un plus si tu as :
+- Expérience avec Redis
+- Expérience avec GitHub Actions
+- Connaissance des API OpenAI ou autres LLM
+- Expérience avec Node.js
+
+Notre stack :
+Python, FastAPI, React, TypeScript, PostgreSQL, Docker, Redis, GitHub Actions, OpenAI API

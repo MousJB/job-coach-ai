@@ -11,7 +11,7 @@ from app.pipeline.step8_quality import QualityStep
 from app.pipeline.step9_report import ReportStep
 
 cv_text = Path("tests/sample_cv.txt").read_text(encoding="utf-8")
-job_text = Path("tests/sample_job.txt").read_text(encoding="utf-8")
+job_text = Path("tests/sample_job_dev.txt").read_text(encoding="utf-8")
 
 cv = ExtractStep().execute(cv_text)
 cv_analysis = CVAnalysisStep().execute(cv)
