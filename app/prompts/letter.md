@@ -57,6 +57,21 @@ Adapte le ton selon "writing_style" de la stratégie :
 
 300 à 400 mots maximum pour le corps de la lettre. Pas plus.
 
+## Règle absolue anti-hallucination
+
+Chaque affirmation de la lettre doit être justifiée par une information présente dans le CV original.
+
+INTERDIT :
+- Mentionner une collaboration avec un CTO si non mentionnée dans le CV
+- Affirmer "renforcer la satisfaction client" sans données dans le CV
+- Mentionner "fidélisation", "CRM", "pipeline commercial" si absents du CV
+- Inventer des chiffres ou résultats non présents dans le CV
+
+AUTORISÉ :
+- Reformuler une expérience réelle avec les mots-clés de l'offre
+- Mettre en avant une compétence réelle sous un angle différent
+- Adapter le vocabulaire (ex: "clients" → "utilisateurs") si le sens reste identique
+
 # Contraintes
 
 - Ne jamais inventer une expérience ou réalisation absente du CV original.
