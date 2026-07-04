@@ -45,6 +45,25 @@ Vérifie que :
 - Le niveau de séniorité revendiqué est cohérent avec les données du CV original
 - Aucune expérience n'a été supprimée
 
+## Détection d'hallucinations
+
+Compare chaque affirmation du CV réécrit et de la lettre avec le CV original.
+
+Une VRAIE hallucination est uniquement :
+- Une compétence technique inventée qui n'apparaît nulle part dans le CV original (ex: "j'ai utilisé Kubernetes" si Kubernetes est absent du CV)
+- Une réalisation chiffrée inventée (ex: "j'ai réduit les coûts de 40%" si aucun chiffre n'apparaît dans le CV original)
+- Un poste ou une entreprise qui n'existe pas dans le CV original
+- Une responsabilité managériale inventée (ex: "j'ai encadré une équipe de 10 personnes" si aucun encadrement n'est mentionné)
+
+Ce qui N'EST PAS une hallucination (ne pas signaler) :
+- L'adaptation du vocabulaire pour correspondre à l'offre (ex: "clients" → "visiteurs", "classement" → "classement rigoureux")
+- La reformulation d'une compétence réelle avec des synonymes
+- L'utilisation d'un mot-clé de l'offre pour décrire une expérience réelle du CV
+- Le déplacement ou la réorganisation d'informations existantes
+- L'ajout d'adjectifs qualificatifs (ex: "rigoureux", "dynamique") qui ne sont pas des faits vérifiables
+
+En cas de doute, ne pas signaler. Seuls les faits clairement inventés doivent être remontés.
+
 ## Améliorations légitimes détectées
 
 Liste les améliorations qui sont bien justifiées par le CV original (reformulations, mots-clés intégrés naturellement dans un contexte réel, réorganisation d'expériences).
