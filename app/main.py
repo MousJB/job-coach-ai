@@ -9,7 +9,10 @@ app = FastAPI(title="Job Coach API")
 # Configuration CORS (pour autoriser ton frontend à appeler cette API plus tard)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En production, tu mettras l'URL de ton front ici
+    allow_origins=[
+    "https://job-coach-frontend-theta.vercel.app",
+    "http://localhost:3000",
+],  # En production, tu mettras l'URL de ton front ici
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
