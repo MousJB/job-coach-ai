@@ -1,32 +1,26 @@
 from abc import ABC, abstractmethod
 
-from app.services.llm_client import llm
-
 
 class BaseStep(ABC):
     """
     Classe de base pour toutes les étapes de la pipeline.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, step_key: str):
         self.name = name
+        self.step_key = step_key
 
     @abstractmethod
     def build_system_prompt(self) -> str:
         """Retourne le prompt système."""
-        pass
+        ...
 
     @abstractmethod
-    def build_user_prompt(self, data) -> str:
+    def build_user_prompt(self, *args, **kwargs) -> str:
         """Construit le prompt utilisateur."""
-        pass
+        ...
 
-    def execute(self, data):
-
-        system_prompt = self.build_system_prompt()
-        user_prompt = self.build_user_prompt(data)
-
-        return llm.chat(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-        )
+    @abstractmethod
+    async def execute(self, *args, **kwargs):
+        """Exécute l'étape et retourne son résultat."""
+        ...

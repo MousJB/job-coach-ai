@@ -10,7 +10,7 @@ import json
 class CVAnalysisStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Analyse CV")
+        super().__init__("Analyse CV", "cv_analysis")
 
     def build_system_prompt(self):
         return prompt_loader.load("cv_analysis.md")
@@ -22,10 +22,11 @@ Voici le CV structuré à analyser :
 {json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(self, cv: CV):
+    async def execute(self, cv: CV):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv),
             response_model=CVAnalysis,
+            step=self.step_key,
         )

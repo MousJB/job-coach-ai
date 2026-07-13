@@ -7,7 +7,7 @@ from app.utils.prompt_loader import prompt_loader
 class ExtractStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Extraction")
+        super().__init__("Extraction", "extract_cv")
 
     def build_system_prompt(self):
         return prompt_loader.load("extract.md")
@@ -19,10 +19,11 @@ Analyse le CV suivant :
 {cv_text}
 """
 
-    def execute(self, cv_text):
+    async def execute(self, cv_text):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv_text),
             response_model=CV,
+            step=self.step_key,
         )

@@ -12,7 +12,7 @@ import json
 class StrategyStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Stratégie")
+        super().__init__("Stratégie", "strategy")
 
     def build_system_prompt(self):
         return prompt_loader.load("strategy.md")
@@ -32,10 +32,11 @@ Voici le résultat du matching :
 {json.dumps(matching.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(self, cv_analysis: CVAnalysis, job: Job, matching: Matching):
+    async def execute(self, cv_analysis: CVAnalysis, job: Job, matching: Matching):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv_analysis, job, matching),
             response_model=Strategy,
+            step=self.step_key,
         )

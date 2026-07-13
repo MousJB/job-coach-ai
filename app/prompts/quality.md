@@ -27,28 +27,6 @@ Tu reçois cinq éléments :
 
 Compare chaque affirmation du CV réécrit et de la lettre avec le CV original.
 
-Une hallucination est toute information présente dans le CV réécrit ou la lettre qui :
-- N'apparaît pas dans le CV original
-- Exagère ou déforme une information réelle
-- Invente une réalisation, une compétence ou une expérience
-
-Exemples de hallucinations typiques :
-- "j'ai mené des ateliers clients" alors que le CV ne mentionne aucune interaction client directe
-- "j'ai réduit les coûts de 40%" alors qu'aucun chiffre n'apparaît dans le CV original
-- Une compétence mentionnée dans la lettre mais absente du CV
-
-## Détection d'incohérences
-
-Vérifie que :
-- Les dates d'expériences sont cohérentes entre le CV original et le CV réécrit
-- Les noms d'entreprises et postes sont identiques
-- Le niveau de séniorité revendiqué est cohérent avec les données du CV original
-- Aucune expérience n'a été supprimée
-
-## Détection d'hallucinations
-
-Compare chaque affirmation du CV réécrit et de la lettre avec le CV original.
-
 Une VRAIE hallucination est uniquement :
 - Une compétence technique inventée qui n'apparaît nulle part dans le CV original (ex: "j'ai utilisé Kubernetes" si Kubernetes est absent du CV)
 - Une réalisation chiffrée inventée (ex: "j'ai réduit les coûts de 40%" si aucun chiffre n'apparaît dans le CV original)
@@ -63,6 +41,14 @@ Ce qui N'EST PAS une hallucination (ne pas signaler) :
 - L'ajout d'adjectifs qualificatifs (ex: "rigoureux", "dynamique") qui ne sont pas des faits vérifiables
 
 En cas de doute, ne pas signaler. Seuls les faits clairement inventés doivent être remontés.
+
+## Détection d'incohérences
+
+Vérifie que :
+- Les dates d'expériences sont cohérentes entre le CV original et le CV réécrit
+- Les noms d'entreprises et postes sont identiques
+- Le niveau de séniorité revendiqué est cohérent avec les données du CV original
+- Aucune expérience n'a été supprimée
 
 ## Améliorations légitimes détectées
 
@@ -92,7 +78,6 @@ Le JSON doit respecter exactement cette structure :
 
 {
   "approved": false,
-  "score_before": 68,
   "score_after": 91,
   "hallucinations_detected": [
     "La lettre mentionne 'ateliers d'analyse clients' — aucune interaction client directe mentionnée dans le CV original",

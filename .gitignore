@@ -17,6 +17,9 @@ logs/
 # Données locales
 data/
 
+# Dump d'arborescence généré localement (ex: tree /f > arborescence.txt)
+arborescence.txt
+
 # IDE
 .vscode/
 .idea/

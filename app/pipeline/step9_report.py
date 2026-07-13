@@ -10,7 +10,7 @@ from app.pipeline.base_step import BaseStep
 class ReportStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Rapport Final")
+        super().__init__("Rapport Final", "report")
 
     def build_system_prompt(self):
         return ""
@@ -18,7 +18,7 @@ class ReportStep(BaseStep):
     def build_user_prompt(self, *args, **kwargs):
         return ""
 
-    def execute(
+    async def execute(
         self,
         cv_rewritten: CV,
         letter: Letter,

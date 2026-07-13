@@ -7,7 +7,7 @@ from app.utils.prompt_loader import prompt_loader
 class JobAnalysisStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Analyse Offre")
+        super().__init__("Analyse Offre", "analyze_job")
 
     def build_system_prompt(self):
         return prompt_loader.load("job_analysis.md")
@@ -19,10 +19,11 @@ Analyse l'offre d'emploi suivante :
 {job_text}
 """
 
-    def execute(self, job_text):
+    async def execute(self, job_text):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(job_text),
             response_model=Job,
+            step=self.step_key,
         )

@@ -12,7 +12,7 @@ import json
 class MatchingStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Matching")
+        super().__init__("Matching", "matching")
 
     def build_system_prompt(self):
         return prompt_loader.load("matching.md")
@@ -32,10 +32,11 @@ Voici l'offre d'emploi structurée :
 {json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(self, cv: CV, cv_analysis: CVAnalysis, job: Job):
+    async def execute(self, cv: CV, cv_analysis: CVAnalysis, job: Job):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv, cv_analysis, job),
             response_model=Matching,
+            step=self.step_key,
         )

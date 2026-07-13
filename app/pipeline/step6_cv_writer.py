@@ -11,7 +11,7 @@ import json
 class CVWriterStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Réécriture CV")
+        super().__init__("Réécriture CV", "cv_rewrite")
 
     def build_system_prompt(self):
         return prompt_loader.load("rewrite.md")
@@ -31,10 +31,11 @@ Voici l'offre d'emploi ciblée (pour contexte) :
 {json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(self, cv: CV, strategy: Strategy, job: Job):
+    async def execute(self, cv: CV, strategy: Strategy, job: Job):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv, strategy, job),
             response_model=CV,
+            step=self.step_key,
         )

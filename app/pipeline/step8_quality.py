@@ -13,7 +13,7 @@ import json
 class QualityStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Contrôle Qualité")
+        super().__init__("Contrôle Qualité", "quality_check")
 
     def build_system_prompt(self):
         return prompt_loader.load("quality.md")
@@ -48,7 +48,7 @@ Voici l'offre d'emploi ciblée :
 {json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(
+    async def execute(
         self,
         cv: CV,
         cv_rewritten: CV,
@@ -56,8 +56,9 @@ Voici l'offre d'emploi ciblée :
         matching: Matching,
         job: Job,
     ):
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv, cv_rewritten, letter, matching, job),
             response_model=QualityCheck,
+            step=self.step_key,
         )

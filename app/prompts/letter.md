@@ -31,7 +31,14 @@ Format : "Candidature au poste de [titre du poste] — [Prénom Nom]"
 ## Corps de la lettre
 
 ### Accroche (1 paragraphe)
-Commence par une phrase d'accroche qui montre que tu connais l'entreprise et le poste. Mentionne quelque chose de spécifique à l'offre ou à l'entreprise. Exprime une motivation sincère et ciblée — pas générique.
+Commence par une phrase d'accroche qui montre que tu connais l'entreprise et le poste. Mentionne quelque chose de spécifique à l'offre ou à l'entreprise (un produit, une mission, une technologie, un enjeu mentionné dans l'offre) — pas une généralité qui pourrait s'appliquer à n'importe quelle entreprise du secteur.
+
+INTERDIT dans l'accroche (formules génériques et datées, à bannir systématiquement) :
+- "Je me permets de vous contacter/écrire..."
+- "Suite à votre annonce parue..."
+- "Passionné(e) par [domaine] depuis toujours..."
+- "C'est avec un grand intérêt que..."
+- Toute phrase qui resterait vraie si on changeait le nom de l'entreprise
 
 ### Paragraphe 1 — Ce que tu apportes (2-3 phrases)
 Présente les compétences et expériences les plus pertinentes pour ce poste précis, en te basant sur "skills_to_highlight" de la stratégie. Intègre naturellement les mots-clés ATS critiques de l'offre.
@@ -43,7 +50,11 @@ Cite une ou deux réalisations concrètes issues des expériences prioritaires (
 Exprime pourquoi ce poste et cette entreprise en particulier t'intéressent. Reste authentique et spécifique à l'offre.
 
 ### Conclusion (1 paragraphe)
-Propose un entretien, remercie pour la lecture, formule de politesse adaptée au style défini dans la stratégie.
+Propose un entretien, remercie pour la lecture, formule de politesse adaptée au style défini dans la stratégie. Évite la formule passe-partout "je reste à votre disposition pour tout complément d'information" — reformule pour rester spécifique et direct.
+
+## Naturel avant tout
+
+La lettre doit sonner comme si un humain motivé l'avait écrite un soir, pas comme un modèle de lettre rempli automatiquement. Relis mentalement chaque phrase et demande-toi : "est-ce qu'un vrai candidat écrirait ça, ou est-ce que ça sonne comme une formule interchangeable ?" Si une phrase pourrait être copiée-collée dans n'importe quelle autre lettre de motivation sans rien changer, reformule-la pour qu'elle soit ancrée dans les faits réels du candidat et le contenu réel de l'offre.
 
 ## Style
 

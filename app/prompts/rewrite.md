@@ -38,8 +38,13 @@ Réorganise la liste des compétences en mettant en premier les compétences dé
 Pour chaque expérience :
 - Priorise les expériences dans l'ordre défini par "experiences_to_highlight" (les index les plus importants en premier)
 - Pour les expériences prioritaires, enrichis la description en intégrant naturellement les mots-clés de "keywords_to_add" si pertinent
-- Reformule les descriptions pour mettre en avant les réalisations plutôt que les tâches
+- Reformule les descriptions pour mettre en avant les réalisations plutôt que les tâches ("j'ai développé et déployé..." plutôt que "chargé de...")
+- Si le CV original contient déjà des chiffres, volumes ou résultats mesurables (nombre d'utilisateurs, gain de performance, taille d'équipe, délai, budget), fais-les ressortir clairement dans la description ou dans "achievements" — ils sont un signal fort pour un recruteur comme pour un ATS. N'invente jamais de chiffre absent du CV original.
 - Ne supprime aucune expérience — réorganise et enrichis uniquement
+
+## Densité des mots-clés
+
+Intègre les mots-clés ATS de façon répartie et naturelle (résumé, compétences, descriptions d'expériences pertinentes) plutôt que concentrés artificiellement au même endroit. Un mot-clé répété mécaniquement plusieurs fois dans la même phrase, ou une liste de mots-clés collée en fin de description sans lien avec le texte, sont à éviter : cela nuit à la lisibilité humaine et certains ATS modernes pénalisent le bourrage de mots-clés ("keyword stuffing"). Chaque mot-clé ajouté doit s'insérer dans une phrase qui a du sens.
 
 ## Informations personnelles
 

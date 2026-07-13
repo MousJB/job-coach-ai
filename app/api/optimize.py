@@ -1,49 +1,84 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+import json
+from collections.abc import AsyncIterator
 
-from app.pipeline.step1_extract import ExtractStep
-from app.pipeline.step2_cv_analysis import CVAnalysisStep
-from app.pipeline.step3_job_analysis import JobAnalysisStep
-from app.pipeline.step4_matching import MatchingStep
-from app.pipeline.step5_strategy import StrategyStep
-from app.pipeline.step6_cv_writer import CVWriterStep
-from app.pipeline.step7_cover_letter import CoverLetterStep
-from app.pipeline.step8_quality import QualityStep
-from app.pipeline.step9_report import ReportStep
+from fastapi import APIRouter
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field
+
+from app.exceptions import LLMResponseValidationError, LLMUpstreamError
 from app.models.report import Report
+from app.pipeline.pipeline import Pipeline
 
 router = APIRouter()
 
+
 class OptimizeRequest(BaseModel):
-    cv_text: str
-    job_text: str
+    cv_text: str = Field(min_length=50, max_length=20000)
+    job_text: str = Field(min_length=50, max_length=20000)
+
 
 @router.post("/optimize", response_model=Report)
-def optimize_candidacy(request: OptimizeRequest):
+async def optimize_candidacy(request: OptimizeRequest):
     """
     Point d'entrée principal de la pipeline.
     Reçoit le texte du CV et de l'offre, retourne le rapport complet.
+
+    Les erreurs LLM (upstream ou réponse invalide) sont gérées par les
+    handlers d'exceptions globaux définis dans app.main.
     """
-    try:
-        # 1. Extraction & Analyse
-        cv = ExtractStep().execute(request.cv_text)
-        cv_analysis = CVAnalysisStep().execute(cv)
-        job = JobAnalysisStep().execute(request.job_text)
+    report: Report | None = None
 
-        # 2. Matching & Stratégie
-        matching = MatchingStep().execute(cv, cv_analysis, job)
-        strategy = StrategyStep().execute(cv_analysis, job, matching)
+    async for event in Pipeline().run(request.cv_text, request.job_text):
+        if event["step"] == "complete":
+            report = event["report"]
 
-        # 3. Génération
-        cv_rewritten = CVWriterStep().execute(cv, strategy, job)
-        letter = CoverLetterStep().execute(cv, cv_rewritten, strategy, job)
+    return report
 
-        # 4. Qualité & Rapport
-        quality = QualityStep().execute(cv, cv_rewritten, letter, matching, job)
-        report = ReportStep().execute(cv_rewritten, letter, matching, strategy, quality)
 
-        return report
+def _sse_pack(event: dict) -> str:
+    payload = dict(event)
+    report = payload.get("report")
+    if report is not None:
+        payload["report"] = report.model_dump() if hasattr(report, "model_dump") else report
+    return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
-    except Exception as e:
-        # En cas d'erreur dans la pipeline (ex: IA qui renvoie un mauvais JSON)
-        raise HTTPException(status_code=500, detail=f"Erreur lors de l'optimisation: {str(e)}")
+
+@router.post("/optimize/stream")
+async def optimize_candidacy_stream(request: OptimizeRequest):
+    """
+    Variante streamée de /optimize : envoie un événement Server-Sent Events
+    (SSE) à chaque étape terminée du pipeline, pour afficher une progression
+    en direct côté client plutôt qu'un simple spinner. Le dernier événement
+    ("complete") contient le rapport final.
+    """
+
+    async def event_stream() -> AsyncIterator[str]:
+        try:
+            async for event in Pipeline().run(request.cv_text, request.job_text):
+                yield _sse_pack(event)
+        except LLMUpstreamError as exc:
+            yield _sse_pack(
+                {
+                    "step": "error",
+                    "status": "error",
+                    "label": "Erreur du fournisseur IA",
+                    "detail": str(exc),
+                    "error_code": "llm_upstream_error",
+                }
+            )
+        except LLMResponseValidationError as exc:
+            yield _sse_pack(
+                {
+                    "step": "error",
+                    "status": "error",
+                    "label": "Réponse IA invalide",
+                    "detail": str(exc),
+                    "error_code": "llm_invalid_response",
+                }
+            )
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

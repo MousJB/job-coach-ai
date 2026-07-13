@@ -12,7 +12,7 @@ import json
 class CoverLetterStep(BaseStep):
 
     def __init__(self):
-        super().__init__("Lettre de motivation")
+        super().__init__("Lettre de motivation", "cover_letter")
 
     def build_system_prompt(self):
         return prompt_loader.load("letter.md")
@@ -36,10 +36,11 @@ Voici l'offre d'emploi ciblée :
 {json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
 """
 
-    def execute(self, cv: CV, cv_rewritten: CV, strategy: Strategy, job: Job):
+    async def execute(self, cv: CV, cv_rewritten: CV, strategy: Strategy, job: Job):
 
-        return llm.generate(
+        return await llm.generate(
             system_prompt=self.build_system_prompt(),
             user_prompt=self.build_user_prompt(cv, cv_rewritten, strategy, job),
             response_model=Letter,
+            step=self.step_key,
         )
