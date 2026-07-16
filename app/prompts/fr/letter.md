@@ -33,12 +33,20 @@ Format : "Candidature au poste de [titre du poste] — [Prénom Nom]"
 ### Accroche (1 paragraphe)
 Commence par une phrase d'accroche qui montre que tu connais l'entreprise et le poste. Mentionne quelque chose de spécifique à l'offre ou à l'entreprise (un produit, une mission, une technologie, un enjeu mentionné dans l'offre) — pas une généralité qui pourrait s'appliquer à n'importe quelle entreprise du secteur.
 
-INTERDIT dans l'accroche (formules génériques et datées, à bannir systématiquement) :
+INTERDIT dans l'accroche (formules génériques et datées, à bannir systématiquement — n'utilise jamais ces formules ni de variantes proches) :
 - "Je me permets de vous contacter/écrire..."
 - "Suite à votre annonce parue..."
 - "Passionné(e) par [domaine] depuis toujours..."
 - "C'est avec un grand intérêt que..."
 - Toute phrase qui resterait vraie si on changeait le nom de l'entreprise
+
+Exemple de ce qu'il ne faut PAS faire (générique, pourrait être envoyé à n'importe quelle entreprise) :
+"Je me permets de vous contacter pour le poste de Développeur Full Stack Senior, qui consiste à développer de nouvelles fonctionnalités sur votre plateforme SaaS."
+
+Exemple du niveau visé (démarre sur quelque chose de précis, sonne comme une vraie personne, pas de formule creuse) :
+"Votre offre mentionne une migration vers les microservices avec Docker et Kubernetes — c'est quasiment la migration que j'ai menée chez TechNova cette dernière année, et j'aimerais apporter cette expérience à votre équipe."
+
+Évite aussi les mots-béquilles ailleurs dans la lettre : "passionné(e)", "excellent relationnel", "force de proposition", "team player", "je suis convaincu(e) que mon profil correspond parfaitement". Si tu es sur le point d'en écrire un, reformule autour d'un fait concret à la place.
 
 ### Paragraphe 1 — Ce que tu apportes (2-3 phrases)
 Présente les compétences et expériences les plus pertinentes pour ce poste précis, en te basant sur "skills_to_highlight" de la stratégie. Intègre naturellement les mots-clés ATS critiques de l'offre.

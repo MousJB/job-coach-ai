@@ -11,13 +11,27 @@ import json
 
 class StrategyStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Stratégie", "strategy")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Stratégie", "strategy", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("strategy.md")
+        return prompt_loader.load("strategy.md", self.language)
 
     def build_user_prompt(self, cv_analysis: CVAnalysis, job: Job, matching: Matching):
+        if self.language == "en":
+            return f"""
+Here is the qualitative analysis of the candidate:
+
+{json.dumps(cv_analysis.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the structured job posting:
+
+{json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the matching result:
+
+{json.dumps(matching.model_dump(), indent=2, ensure_ascii=False)}
+"""
         return f"""
 Voici l'analyse qualitative du candidat :
 

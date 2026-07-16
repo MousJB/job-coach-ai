@@ -11,13 +11,27 @@ import json
 
 class MatchingStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Matching", "matching")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Matching", "matching", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("matching.md")
+        return prompt_loader.load("matching.md", self.language)
 
     def build_user_prompt(self, cv: CV, cv_analysis: CVAnalysis, job: Job):
+        if self.language == "en":
+            return f"""
+Here is the candidate's structured resume:
+
+{json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the qualitative analysis of the candidate:
+
+{json.dumps(cv_analysis.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the structured job posting:
+
+{json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
+"""
         return f"""
 Voici le CV structuré du candidat :
 

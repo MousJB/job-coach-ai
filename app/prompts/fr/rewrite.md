@@ -29,6 +29,9 @@ Réécris le résumé en :
 - Incluant naturellement les mots-clés ATS critiques de l'offre
 - Gardant une longueur de 3-4 phrases maximum
 
+Évite les formules toutes faites qui sonnent comme un CV généré automatiquement :
+"Passionné(e) par...", "Fort(e) de X années d'expérience...", "Doté(e) d'un excellent sens du relationnel", "Je suis une personne dynamique et motivée". Préfère des phrases construites autour de faits concrets du parcours du candidat plutôt que des qualificatifs génériques. Varie la structure des phrases plutôt que d'enchaîner des formules interchangeables.
+
 ## Compétences
 
 Réorganise la liste des compétences en mettant en premier les compétences définies dans "skills_to_highlight" de la stratégie. Ne supprime aucune compétence existante — réorganise uniquement.

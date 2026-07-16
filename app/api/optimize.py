@@ -1,5 +1,6 @@
 import json
 from collections.abc import AsyncIterator
+from typing import Literal
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
@@ -11,10 +12,22 @@ from app.pipeline.pipeline import Pipeline
 
 router = APIRouter()
 
+_ERROR_LABELS = {
+    "fr": {
+        "llm_upstream_error": "Erreur du fournisseur IA",
+        "llm_invalid_response": "Réponse IA invalide",
+    },
+    "en": {
+        "llm_upstream_error": "AI provider error",
+        "llm_invalid_response": "Invalid AI response",
+    },
+}
+
 
 class OptimizeRequest(BaseModel):
     cv_text: str = Field(min_length=50, max_length=20000)
     job_text: str = Field(min_length=50, max_length=20000)
+    language: Literal["fr", "en"] = "fr"
 
 
 @router.post("/optimize", response_model=Report)
@@ -28,7 +41,7 @@ async def optimize_candidacy(request: OptimizeRequest):
     """
     report: Report | None = None
 
-    async for event in Pipeline().run(request.cv_text, request.job_text):
+    async for event in Pipeline().run(request.cv_text, request.job_text, request.language):
         if event["step"] == "complete":
             report = event["report"]
 
@@ -51,17 +64,18 @@ async def optimize_candidacy_stream(request: OptimizeRequest):
     en direct côté client plutôt qu'un simple spinner. Le dernier événement
     ("complete") contient le rapport final.
     """
+    labels = _ERROR_LABELS.get(request.language, _ERROR_LABELS["fr"])
 
     async def event_stream() -> AsyncIterator[str]:
         try:
-            async for event in Pipeline().run(request.cv_text, request.job_text):
+            async for event in Pipeline().run(request.cv_text, request.job_text, request.language):
                 yield _sse_pack(event)
         except LLMUpstreamError as exc:
             yield _sse_pack(
                 {
                     "step": "error",
                     "status": "error",
-                    "label": "Erreur du fournisseur IA",
+                    "label": labels["llm_upstream_error"],
                     "detail": str(exc),
                     "error_code": "llm_upstream_error",
                 }
@@ -71,7 +85,7 @@ async def optimize_candidacy_stream(request: OptimizeRequest):
                 {
                     "step": "error",
                     "status": "error",
-                    "label": "Réponse IA invalide",
+                    "label": labels["llm_invalid_response"],
                     "detail": str(exc),
                     "error_code": "llm_invalid_response",
                 }

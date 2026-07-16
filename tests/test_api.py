@@ -11,7 +11,7 @@ def client():
     return TestClient(app)
 
 
-async def _fake_run(self, cv_text, job_text):
+async def _fake_run(self, cv_text, job_text, language="fr"):
     yield {"step": "extract_cv", "label": "Analyse du CV", "status": "done"}
     yield {
         "step": "complete",
@@ -22,7 +22,7 @@ async def _fake_run(self, cv_text, job_text):
     }
 
 
-async def _raising_run(self, cv_text, job_text):
+async def _raising_run(self, cv_text, job_text, language="fr"):
     if False:  # garde la fonction en générateur asynchrone sans jamais yield
         yield {}
     raise LLMUpstreamError("boom")

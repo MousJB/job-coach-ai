@@ -11,13 +11,31 @@ import json
 
 class CoverLetterStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Lettre de motivation", "cover_letter")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Lettre de motivation", "cover_letter", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("letter.md")
+        return prompt_loader.load("letter.md", self.language)
 
     def build_user_prompt(self, cv: CV, cv_rewritten: CV, strategy: Strategy, job: Job):
+        if self.language == "en":
+            return f"""
+Here is the candidate's original resume:
+
+{json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the rewritten, optimized resume:
+
+{json.dumps(cv_rewritten.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the strategy to apply:
+
+{json.dumps(strategy.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the targeted job posting:
+
+{json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
+"""
         return f"""
 Voici le CV original du candidat :
 

@@ -6,15 +6,18 @@ from app.utils.prompt_loader import prompt_loader
 
 class JobAnalysisStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Analyse Offre", "analyze_job")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Analyse Offre", "analyze_job", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("job_analysis.md")
+        return prompt_loader.load("job_analysis.md", self.language)
 
     def build_user_prompt(self, job_text):
+        instruction = (
+            "Analyze the following job posting:" if self.language == "en" else "Analyse l'offre d'emploi suivante :"
+        )
         return f"""
-Analyse l'offre d'emploi suivante :
+{instruction}
 
 {job_text}
 """

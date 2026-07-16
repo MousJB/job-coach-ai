@@ -10,13 +10,27 @@ import json
 
 class CVWriterStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Réécriture CV", "cv_rewrite")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Réécriture CV", "cv_rewrite", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("rewrite.md")
+        return prompt_loader.load("rewrite.md", self.language)
 
     def build_user_prompt(self, cv: CV, strategy: Strategy, job: Job):
+        if self.language == "en":
+            return f"""
+Here is the candidate's original resume:
+
+{json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the optimization strategy to apply:
+
+{json.dumps(strategy.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the targeted job posting (for context):
+
+{json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
+"""
         return f"""
 Voici le CV original du candidat :
 

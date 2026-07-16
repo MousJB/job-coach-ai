@@ -12,11 +12,11 @@ import json
 
 class QualityStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Contrôle Qualité", "quality_check")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Contrôle Qualité", "quality_check", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("quality.md")
+        return prompt_loader.load("quality.md", self.language)
 
     def build_user_prompt(
         self,
@@ -26,6 +26,28 @@ class QualityStep(BaseStep):
         matching: Matching,
         job: Job,
     ):
+        if self.language == "en":
+            return f"""
+Here is the candidate's original resume (source of truth):
+
+{json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the rewritten, optimized resume:
+
+{json.dumps(cv_rewritten.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the generated cover letter:
+
+{json.dumps(letter.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the matching result (ATS score before optimization):
+
+{json.dumps(matching.model_dump(), indent=2, ensure_ascii=False)}
+
+Here is the targeted job posting:
+
+{json.dumps(job.model_dump(), indent=2, ensure_ascii=False)}
+"""
         return f"""
 Voici le CV original du candidat (source de vérité) :
 

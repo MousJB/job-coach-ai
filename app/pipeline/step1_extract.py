@@ -6,15 +6,16 @@ from app.utils.prompt_loader import prompt_loader
 
 class ExtractStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Extraction", "extract_cv")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Extraction", "extract_cv", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("extract.md")
+        return prompt_loader.load("extract.md", self.language)
 
     def build_user_prompt(self, cv_text):
+        instruction = "Analyze the following resume:" if self.language == "en" else "Analyse le CV suivant :"
         return f"""
-Analyse le CV suivant :
+{instruction}
 
 {cv_text}
 """

@@ -15,24 +15,40 @@ from app.pipeline.step7_cover_letter import CoverLetterStep
 from app.pipeline.step8_quality import QualityStep
 from app.pipeline.step9_report import ReportStep
 from app.services.cache import pipeline_cache
+from app.utils.prompt_loader import DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES
 
 logger = logging.getLogger(__name__)
 
-STEP_LABELS: dict[str, str] = {
-    "extract_cv": "Analyse du CV",
-    "analyze_job": "Analyse de l'offre d'emploi",
-    "cv_analysis": "Évaluation du profil",
-    "matching": "Calcul du score de compatibilité",
-    "strategy": "Définition de la stratégie",
-    "cv_rewrite": "Réécriture du CV",
-    "cover_letter": "Rédaction de la lettre de motivation",
-    "quality_check": "Contrôle qualité",
-    "report": "Finalisation du rapport",
+STEP_LABELS: dict[str, dict[str, str]] = {
+    "fr": {
+        "extract_cv": "Analyse du CV",
+        "analyze_job": "Analyse de l'offre d'emploi",
+        "cv_analysis": "Évaluation du profil",
+        "matching": "Calcul du score de compatibilité",
+        "strategy": "Définition de la stratégie",
+        "cv_rewrite": "Réécriture du CV",
+        "cover_letter": "Rédaction de la lettre de motivation",
+        "quality_check": "Contrôle qualité",
+        "report": "Finalisation du rapport",
+    },
+    "en": {
+        "extract_cv": "Analyzing resume",
+        "analyze_job": "Analyzing job posting",
+        "cv_analysis": "Assessing profile",
+        "matching": "Computing compatibility score",
+        "strategy": "Defining strategy",
+        "cv_rewrite": "Rewriting resume",
+        "cover_letter": "Writing cover letter",
+        "quality_check": "Quality check",
+        "report": "Finalizing report",
+    },
 }
 
 
-def _cache_key(cv_text: str, job_text: str) -> str:
+def _cache_key(cv_text: str, job_text: str, language: str) -> str:
     digest = hashlib.sha256()
+    digest.update(language.encode("utf-8"))
+    digest.update(b"\x00")
     digest.update(cv_text.encode("utf-8"))
     digest.update(b"\x00")
     digest.update(job_text.encode("utf-8"))
@@ -49,14 +65,21 @@ class Pipeline:
     comme l'analyse qualitative du CV (qui ne dépend que de l'extraction).
     """
 
-    async def run(self, cv_text: str, job_text: str) -> AsyncIterator[dict]:
-        cache_key = _cache_key(cv_text, job_text)
+    async def run(
+        self, cv_text: str, job_text: str, language: str = DEFAULT_LANGUAGE
+    ) -> AsyncIterator[dict]:
+        if language not in SUPPORTED_LANGUAGES:
+            language = DEFAULT_LANGUAGE
+
+        labels = STEP_LABELS[language]
+
+        cache_key = _cache_key(cv_text, job_text, language)
         cached_report = pipeline_cache.get(cache_key)
         if cached_report is not None:
-            logger.info("pipeline cache hit")
+            logger.info("pipeline cache hit language=%s", language)
             yield {
                 "step": "complete",
-                "label": STEP_LABELS["report"],
+                "label": labels["report"],
                 "status": "done",
                 "cached": True,
                 "report": cached_report,
@@ -76,44 +99,57 @@ class Pipeline:
             return result
 
         def event(step_key: str) -> dict:
-            return {"step": step_key, "label": STEP_LABELS[step_key], "status": "done"}
+            return {"step": step_key, "label": labels[step_key], "status": "done"}
 
         # Round A : extraction CV et analyse de l'offre n'ont aucune dépendance
         # croisée, elles démarrent donc en même temps.
-        extract_task = asyncio.create_task(run_step(ExtractStep().execute(cv_text), "extract_cv"))
-        job_task = asyncio.create_task(run_step(JobAnalysisStep().execute(job_text), "analyze_job"))
+        extract_task = asyncio.create_task(
+            run_step(ExtractStep(language).execute(cv_text), "extract_cv")
+        )
+        job_task = asyncio.create_task(
+            run_step(JobAnalysisStep(language).execute(job_text), "analyze_job")
+        )
 
         cv = await extract_task
         yield event("extract_cv")
 
         # L'analyse qualitative du CV ne dépend que de l'extraction, pas de
         # l'offre : elle continue de tourner pendant que job_task termine.
-        cv_analysis = await run_step(CVAnalysisStep().execute(cv), "cv_analysis")
+        cv_analysis = await run_step(CVAnalysisStep(language).execute(cv), "cv_analysis")
         yield event("cv_analysis")
 
         job = await job_task
         yield event("analyze_job")
 
-        matching = await run_step(MatchingStep().execute(cv, cv_analysis, job), "matching")
+        matching = await run_step(
+            MatchingStep(language).execute(cv, cv_analysis, job), "matching"
+        )
         yield event("matching")
 
-        strategy = await run_step(StrategyStep().execute(cv_analysis, job, matching), "strategy")
+        strategy = await run_step(
+            StrategyStep(language).execute(cv_analysis, job, matching), "strategy"
+        )
         yield event("strategy")
 
-        cv_rewritten = await run_step(CVWriterStep().execute(cv, strategy, job), "cv_rewrite")
+        cv_rewritten = await run_step(
+            CVWriterStep(language).execute(cv, strategy, job), "cv_rewrite"
+        )
         yield event("cv_rewrite")
 
         letter = await run_step(
-            CoverLetterStep().execute(cv, cv_rewritten, strategy, job), "cover_letter"
+            CoverLetterStep(language).execute(cv, cv_rewritten, strategy, job), "cover_letter"
         )
         yield event("cover_letter")
 
         quality = await run_step(
-            QualityStep().execute(cv, cv_rewritten, letter, matching, job), "quality_check"
+            QualityStep(language).execute(cv, cv_rewritten, letter, matching, job),
+            "quality_check",
         )
         yield event("quality_check")
 
-        report: Report = await ReportStep().execute(cv_rewritten, letter, matching, strategy, quality)
+        report: Report = await ReportStep(language).execute(
+            cv_rewritten, letter, matching, strategy, quality
+        )
 
         logger.info("pipeline total duration_ms=%d", int((time.perf_counter() - start) * 1000))
 
@@ -121,7 +157,7 @@ class Pipeline:
 
         yield {
             "step": "complete",
-            "label": STEP_LABELS["report"],
+            "label": labels["report"],
             "status": "done",
             "cached": False,
             "report": report,

@@ -9,15 +9,20 @@ import json
 
 class CVAnalysisStep(BaseStep):
 
-    def __init__(self):
-        super().__init__("Analyse CV", "cv_analysis")
+    def __init__(self, language: str = "fr"):
+        super().__init__("Analyse CV", "cv_analysis", language)
 
     def build_system_prompt(self):
-        return prompt_loader.load("cv_analysis.md")
+        return prompt_loader.load("cv_analysis.md", self.language)
 
     def build_user_prompt(self, cv: CV):
+        instruction = (
+            "Here is the structured resume to analyze:"
+            if self.language == "en"
+            else "Voici le CV structuré à analyser :"
+        )
         return f"""
-Voici le CV structuré à analyser :
+{instruction}
 
 {json.dumps(cv.model_dump(), indent=2, ensure_ascii=False)}
 """
